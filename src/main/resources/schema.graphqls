@@ -1,0 +1,35 @@
+schema {
+query: Query
+}
+
+
+type Query {
+user(id: ID!): User
+}
+
+
+type User {
+id: ID!
+name: String!
+orders(limit: Int = 10): [Order!]!
+}
+
+
+type Order {
+id: ID!
+totalPrice: Float!
+items: [OrderItem!]!
+}
+
+
+type OrderItem {
+product: Product!
+quantity: Int!
+}
+
+
+type Product {
+id: ID!
+name: String!
+price: Float!
+}

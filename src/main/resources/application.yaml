@@ -1,0 +1,22 @@
+server:
+  port: 8090
+
+spring:
+  graphql:
+    graphiql:
+      enabled: true
+    websocket:
+      path: /graphql
+    path: /graphql
+  
+logging:
+  level:
+    com.it.graphql_gateway_skeleton: DEBUG
+    org.dataloader: DEBUG
+
+# Downstream service endpoints (for demo purposes)
+downstream:
+  services:
+    user-service: http://localhost:9001
+    order-service: http://localhost:9002  
+    product-service: http://localhost:9003
