@@ -1,4 +1,4 @@
-package com.it.graphql_gateway_skeleton.graphql;
+package com.it.graphql_gateway_skeleton.resolver;
 
 import com.it.graphql_gateway_skeleton.entity.Order;
 import com.it.graphql_gateway_skeleton.entity.User;

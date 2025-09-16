@@ -3,16 +3,17 @@ server:
 
 spring:
   graphql:
-    graphiql:
+    graphiql: # enable graphiQL playground for UI query and execution via /graphiql
       enabled: true
-    websocket:
-      path: /graphql
-    path: /graphql
+#    websocket:
+#      path: /graphql
+#    path: /graphql
   
 logging:
   level:
     com.it.graphql_gateway_skeleton: DEBUG
     org.dataloader: DEBUG
+    org.springframework.graphql: DEBUG
 
 # Downstream service endpoints (for demo purposes)
 downstream:

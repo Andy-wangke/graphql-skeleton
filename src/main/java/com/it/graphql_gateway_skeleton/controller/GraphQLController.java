@@ -1,4 +1,4 @@
-package com.it.graphql_gateway_skeleton.resource;
+package com.it.graphql_gateway_skeleton.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +11,6 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -21,25 +20,24 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ *
+ * TODO didn't register the application
  * @Author Andy wang
  * @Created 2025/9/12
  */
-@Component
-@Scope("request")
-@Path("/api")
+@RestController
 //@ConditionalOnProperty(name = "custom.graphql.enabled", havingValue = "true", matchIfMissing = false)
-public class GraphQLResource {
+public class GraphQLController {
 
     private final GraphQL graphql;
 
     @Autowired
-    public GraphQLResource(GraphQL graphql) {
+    public GraphQLController(GraphQL graphql) {
         this.graphql = graphql;
     }
 
-    @GET
-    @Path("graphql")
-    @Consumes({"application/json"})
+
+    @RequestMapping(value="/graphql", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Object graphQL(@RequestParam("query") String query,
         @RequestParam(value = "operationName", required = false) String operationName,
         @RequestParam(value = "variables", required = false) String variablesJson,
@@ -48,9 +46,7 @@ public class GraphQLResource {
         return executeGraphQLQuery(query, operationName, variablesJson, httpServletResponse);
     }
 
-    @POST
-    @Path("graphql")
-    @Consumes({"application/json"})
+    @RequestMapping(value="/graphql", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Object graphQLPost(@RequestBody String requestBody, HttpServletResponse httpServletResponse) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(requestBody);
@@ -102,9 +98,7 @@ public class GraphQLResource {
         }
     }
 
-    @GET
-    @Path("hello")
-    @Consumes({"application/json"})
+    @RequestMapping(value="/hello", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Object hello() throws Exception {
         return Map.of("message", "Hello from GraphQL Gateway!");
     }
