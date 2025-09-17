@@ -5,9 +5,12 @@ spring:
   graphql:
     graphiql: # enable graphiQL playground for UI query and execution via /graphiql
       enabled: true
-#    websocket:
-#      path: /graphql
-#    path: /graphql
+      path: /graphiql
+    path: /graphql
+    schema:
+      locations: classpath:schema.graphqls
+    web-mvc:
+      path: /graphql
   
 logging:
   level:
@@ -15,9 +18,14 @@ logging:
     org.dataloader: DEBUG
     org.springframework.graphql: DEBUG
 
+# Enable custom GraphQL controller
+custom:
+  graphql:
+    enabled: true
+
 # Downstream service endpoints (for demo purposes)
 downstream:
   services:
     user-service: http://localhost:9001
-    order-service: http://localhost:9002  
+    order-service: http://localhost:9002
     product-service: http://localhost:9003

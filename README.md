@@ -46,7 +46,8 @@ mvn spring-boot:run
 
 ### 2. 访问 GraphiQL
 
-打开浏览器访问: http://localhost:8080/graphiql
+GraphQL Endpoint: http://localhost:8080/graphql
+GraphiQL Interface: http://localhost:8080/graphiql (if enabled)
 
 ### 3. 示例查询
 

@@ -6,27 +6,27 @@ import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * Custom GraphQL controller that handles GraphQL queries and mutations.
+ * This controller provides endpoints for both GET and POST requests to /graphql.
+ * When enabled, this controller will handle GraphQL requests instead of Spring Boot's default endpoint.
  *
- * TODO didn't register the application
- * @Author Andy wang
- * @Created 2025/9/12
+ * @author Andy wang
+ * @created 2025/9/12
  */
 @RestController
-//@ConditionalOnProperty(name = "custom.graphql.enabled", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(name = "custom.graphql.enabled", havingValue = "true", matchIfMissing = false)
 public class GraphQLController {
 
     private final GraphQL graphql;
@@ -98,7 +98,36 @@ public class GraphQLController {
         }
     }
 
-    @RequestMapping(value="/hello", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * GraphiQL playground endpoint that serves the GraphiQL UI.
+     * Provides an interactive interface for testing GraphQL queries.
+     *
+     * @return GraphiQL HTML page
+     * @throws IOException if the HTML file cannot be read
+     */
+    @RequestMapping(value="/graphiql", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String graphiql() throws IOException {
+        try {
+            ClassPathResource resource = new ClassPathResource("static/graphiql.html");
+            return new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return """
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>GraphiQL - Error</title>
+                </head>
+                <body>
+                    <h1>Error loading GraphiQL</h1>
+                    <p>Could not load the GraphiQL interface. Error: """ + e.getMessage() + """
+                    </p>
+                </body>
+                </html>
+                """;
+        }
+    }
+
+    @RequestMapping(value="/hello", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Object hello() throws Exception {
         return Map.of("message", "Hello from GraphQL Gateway!");
     }

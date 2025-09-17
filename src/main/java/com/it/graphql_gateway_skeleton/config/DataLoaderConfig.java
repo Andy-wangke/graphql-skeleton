@@ -22,13 +22,11 @@ public class DataLoaderConfig {
     public DataLoaderRegistry registry(ProductService productService) {
         DataLoaderRegistry registry = new DataLoaderRegistry();
 
-
         BatchLoader<String, Product> batchLoader = (List<String> ids) -> 
             CompletableFuture.supplyAsync(() -> {
                 Map<String, Product> map = productService.getByIds(ids);
                 return ids.stream().map(map::get).collect(Collectors.toList());
             });
-
         registry.register(PRODUCT_LOADER, DataLoader.newDataLoader(batchLoader));
         return registry;
     }
